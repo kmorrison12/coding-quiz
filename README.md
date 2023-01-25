@@ -18,3 +18,7 @@ Given I am taking a code quiz
 - THEN the game is over
 - WHEN the game is over
 - THEN I can save my initials and score
+
+Deployed applicaiton: https://kmorrison12.github.io/coding-quiz/
+
+![Application Screenshot](./assets/screenshot.jpg)
