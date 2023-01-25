@@ -1,43 +1,63 @@
-var questionsEl = document.getElementsByClassName("questions"),
-    answersEl = document.getElementsByClassName("answer"),
-    resultEl = document.getElementsByClassName("results"),
-    timerEl = document.getElementsByID("countdown"),
-    startBtnEl = document.getElementsByClassName("start"),
-    current = 0,
+var questionBox = document.querySelector(".questions")
+var answersEl = document.querySelector(".answers")
+var resultEl = document.querySelector(".result")
+var timerEl = document.getElementById("countdown")
+var startBtnEl = document.querySelector(".start")
+var quizDetails = document.querySelector(".quiz-details")
+var mainEl = document.querySelector(".container")
+var quizTitle = document.querySelector(".quiz-title")
+var answer1 = document.querySelector("#answer1")
+var answer2 = document.querySelector("#answer2")
+var answer3 = document.querySelector("#answer3")
+var answer4 = document.querySelector("#answer4")
 
+// var to keep track of state of quiz
+var questionIndex = 0
+var choicesIndex = 0
+var reduceTimer = 5
+
+console.log(quizDetails)
+
+function startQuiz() {
+    quizDetails.innerHTML = "";
+    quizTitle.innerHTML = "";
+    startBtnEl.setAttribute("style", "display: none")
+    answer1.setAttribute("style", "display: block")
+    answer2.setAttribute("style", "display: block")
+    answer3.setAttribute("style", "display: block")
+    answer4.setAttribute("style", "display: block")
+    timerCountdown();
+    getQuestions();
+}
+
+startBtnEl.addEventListener("click", startQuiz);
 
 //Add timer that starts on click of Start Quiz button
 function timerCountdown() {
     var timeLeft = 60;
     var timeInterval = setInterval(function () {
         if (timeLeft > 1) {
-            timerEl.textContent = timeLeft + "seconds remaining";
             timeLeft--;
+            timerEl.textContent = timeLeft + " seconds remaining";
         } else if (timeLeft === 1) {
-            timerEl.textContent = timeLeft + "second remaining";
+            timerEl.textContent = timeLeft + " second remaining";
             timeLeft--;
         } else {
-            //Clear timer and notify user time is up
-            timerEl.textContent = "";
-            clearInterval(timeInterval);
-            displayMessage("Time's up!");
+            timerEl.textContent = "Time's up!";
         //Reduce timer by 5 secs if user answers question wrong
         }
     }, 1000);
 }
 
-startBtnEl.addEventListener("click", timerCountdown);
-
 
 //object with all questions and answer choices
-// set as array and add a for loop through the questions?
 var questions = [ 
 {
 question: "Which of the following is the correct HTML element for the largest heading?",
 choices: [
     {
-    text: "<head>",
-    isCorrect: false,
+        text: "<head>",
+        isCorrect: false,
     },
 
     {
@@ -51,7 +71,7 @@ choices: [
     },
 
     {
-        text: "<h6>"
+        text: "<h6>",
         isCorrect: false,
     },
 ],
@@ -76,7 +96,7 @@ choices: [
     },
 
     {
-        text: "/"
+        text: "/",
         isCorrect: true,
     },
 ],
@@ -101,7 +121,7 @@ choices: [
     },
 
     {
-        text: "row"
+        text: "row",
         isCorrect: false,
     },
 ],
@@ -126,7 +146,7 @@ choices: [
     },
 
     {
-        text: "with the doc type"
+        text: "with the doc type",
         isCorrect: false,
     },
 ],
@@ -151,7 +171,7 @@ choices: [
     },
 
     {
-        text: "body:color=black"
+        text: "body:color=black",
         isCorrect: false,
     },
 ],
@@ -176,7 +196,7 @@ choices: [
     },
 
     {
-        text: "#test"
+        text: "#test",
         isCorrect: false,
     },
 ],
@@ -201,7 +221,7 @@ choices: [
     },
 
     {
-        text: "var colors = 0('red'), 1('green'), 2('blue')"
+        text: "var colors = 0('red'), 1('green'), 2('blue')",
         isCorrect: false,
     },
 ],
@@ -226,7 +246,7 @@ choices: [
     },
 
     {
-        text: "="
+        text: "=",
         isCorrect: true,
     },
 ],
@@ -235,15 +255,45 @@ choices: [
 ]
 
 function getQuestions() {
-//display question results
-if (isCorrect=== true) {
-    resultEl.textContent = "Correct!"
-} else {
-    resultEl.textContent = "Wrong"
+    //display question in container
+    console.log(questions[questionIndex]);
+    console.log(questions[questionIndex].question);
+
+    // elements for each question
+    var questionEl = document.createElement("h2");
+
+    // values from object to put in each element
+    var questionText = questions[questionIndex].question
+
+    // inject value from object into element
+    questionEl.innerText = questionText 
+    console.log(questionEl)
+
+    // inject element into DOM
+    questionBox.appendChild(questionEl)
+
+    console.log(questions[choicesIndex].choices)
+
+    var answersText = ""
+
+    for (var i = 0; i < 4; i++) {   
+        answersEl.innerText = answersText
+        questionBox.appendChild(answersEl)
+
+        answer1.textContent = questions[choicesIndex].choices[0].text
+        answer2.textContent = questions[choicesIndex].choices[1].text
+        answer3.textContent = questions[choicesIndex].choices[2].text
+        answer4.textContent = questions[choicesIndex].choices[3].text
+
+        console.log("question text", questions[choicesIndex].choices[i].text)
+    }
 }
+
+function results() {
+    if (questions[choicesIndex].choices.isCorrect === true) {
+        resultEl.textContent = "Correct!";
+    } else {
+        resultEl.textContent = "Wrong";
+    }
+    questionBox.appendChild(answersEl)
 }
-
-
-// WHEN the game is over
-// THEN I can save my initials and score
-
